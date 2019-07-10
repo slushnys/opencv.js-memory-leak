@@ -1,17 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <input type="button" value="create frames" @click="createFrames">
+  <input type="button" value="delete frames" @click="deleteFrames">  
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data: () => ({
+    frames: [],
+    videoFile: null,
+    frame: null,
+  }),
+  created() {
+    window.vue = this
+  },
+  methods: {
+    createFrames() {
+      let frame = new cv.Mat.ones(720, 1280, cv.CV_8UC4)
+      for (let i = 0; i < 80; i++) {
+        this.frames.push(frame.clone())
+      }
+    },
+    deleteFrames() {
+      for (let frame of this.frames) {
+        frame.delete()
+      }
+      this.frames = []
+    }
   }
 }
 </script>
